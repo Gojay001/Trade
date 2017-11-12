@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.gojay.nmid.dao.StarDao">
+    <!--将收藏信息中userId与goodsId写入collection表-->
+    <insert id="starGoods" parameterType="Star" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO collection(user_id, goods_id)
+        VALUES (#{userId}, #{goodsId})
+    </insert>
+
+    <!--根据userId和goodsId查询收藏信息是否存在-->
+    <select id="starIsExist" parameterType="Star" resultType="Star">
+        SELECT id, user_id, goods_id
+        FROM collection WHERE user_id = #{userId} AND goods_id = #{goodsId}
+    </select>
+
+    <!--根据收藏信息id删除collection表中的记录-->
+    <delete id="unstarGoods">
+        DELETE FROM collection
+        WHERE id = #{id}
+    </delete>
+
+    <!--根据商品id删除collection表中的记录-->
+    <delete id="deleteStar">
+        DELETE FROM collection
+        WHERE goods_id = #{goodId}
+    </delete>
+
+    <!--根据用户id查询collection表中的goodsId-->
+    <select id="getGoodsId" parameterType="Integer" resultType="Integer">
+        SELECT goods_id
+        FROM collection WHERE user_id=#{userId}
+    </select>
+</mapper>

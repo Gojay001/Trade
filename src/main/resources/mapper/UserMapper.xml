@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.gojay.nmid.dao.UserDao">
+    <!--将用户信息写入user表-->
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user(username, nickname, password, tel, qq, email, address)
+        VALUES (#{username}, #{nickname}, #{password}, #{tel}, #{qq}, #{email}, #{address})
+    </insert>
+
+    <!--查询用户名对应的记录-->
+    <select id="getUserByName" resultType="User" parameterType="String">
+        SELECT id, username, nickname, password, tel, qq, email, address
+        FROM user WHERE username = #{username}
+    </select>
+
+    <!--根据用户id查询用户记录-->
+    <select id="getUserById" resultType="User" parameterType="Integer">
+        <!-- 具体的sql -->
+        SELECT id, username, nickname, password, tel, qq, email, address
+        FROM user WHERE id = #{userId}
+    </select>
+
+    <!--更新用户信息-->
+    <update id="updateUser" parameterType="User">
+        UPDATE user
+        SET nickname = #{nickname},
+        password = #{password},
+        tel = #{tel},
+        qq = #{qq},
+        email = #{email},
+        address = #{address}
+        WHERE id = #{id} AND username = #{username}
+    </update>
+</mapper>

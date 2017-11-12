@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.gojay.nmid.dao.GoodsDao">
+    <!--将求购商品信息写入goods表-->
+    <insert id="insertGoods" parameterType="Goods" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO goods(name, price, catagory,detail, create_time, sell_id, buy_id, status)
+        VALUES (#{name}, #{price}, #{catagory}, #{detail}, #{createTime}, #{sellId}, #{buyId}, #{status})
+    </insert>
+
+    <!--列出求购商品信息列表-->
+    <select id="listAskGoods" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE buy_id IS NOT NULL AND sell_id IS NULL AND status = 1
+        ORDER BY create_time DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <!--按照create_time列出闲置商品列表-->
+    <select id="listPublishGoodsByTime" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
+        ORDER BY create_time DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <!--按照view列出闲置商品列表-->
+    <select id="listPublishGoodsByView" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
+        ORDER BY view DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <!--根据类别列出发布中列表-->
+    <select id="listPublishGoodsByCatagory" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods
+        WHERE catagory = #{catagory} AND sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
+        ORDER BY id DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <!--根据名称模糊搜索发布中商品列表-->
+    <select id="listPublishGoodsByName" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods
+        WHERE name LIKE CONCAT('%',#{name},'%') AND sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
+        ORDER BY id DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <!--根据商品id删除image、collection、goods表中记录-->
+    <delete id="deleteGoods">
+        DELETE FROM goods
+        WHERE id = #{goodId}
+    </delete>
+
+    <!--根据goodsId查询商品-->
+    <select id="getGoodsById" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE id = #{goodsId}
+    </select>
+
+    <!--根据goodsId增加访问量-->
+    <update id="addGoodsView" parameterType="Goods">
+        UPDATE goods
+        SET view = view+1
+        WHERE id = #{goodsId}
+    </update>
+
+    <!--更新商品信息-->
+    <update id="updateGoods" parameterType="Goods">
+        UPDATE goods
+        SET name = #{name},
+            price = #{price},
+            catagory = #{catagory},
+            detail = #{detail},
+            create_time = #{createTime},
+            sell_id = #{sellId},
+            buy_id = #{buyId},
+            status = #{status},
+            view = view
+        WHERE id = #{id}
+    </update>
+
+    <!--根据用户id查询用户预约商品列表-->
+    <select id="listOrderGoods" parameterType="Integer" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE buy_id = #{userId} AND status = 2
+        ORDER BY id
+    </select>
+
+    <!--根据用户id查询已完成商品列表-->
+    <select id="listFinishGoods" parameterType="Integer" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE (sell_id = #{userId} OR buy_id = #{userId}) AND status = 3
+        ORDER BY id
+    </select>
+
+    <!--根据用户id查询用户发布的商品列表-->
+    <select id="listUserPublishGoods" parameterType="Integer" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE sell_id = #{userId}
+        ORDER BY id
+    </select>
+
+    <!--根据用户id查询用户求购的商品列表-->
+    <select id="listUserAskGoods" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE buy_id = #{userId}
+        ORDER BY id
+    </select>
+
+    <!--根据商品种类查询所有商品-->
+    <select id="listAllByCatagory" resultType="Goods">
+        SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
+        FROM goods WHERE catagory = #{catagory}
+        ORDER BY id
+    </select>
+</mapper>
