@@ -2,6 +2,7 @@ package xin.gojay.nmid.service.serviceimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import xin.gojay.nmid.dao.GoodsDao;
@@ -41,15 +42,18 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResponseUtil insertGoods(Goods goods, MultipartHttpServletRequest request) {
         if (checkGoodsInfo(goods) != TRUE) {
             responseUtil = new ResponseUtil(400, "info error");
             return responseUtil;
         }
+        // 保存商品信息
         if (goodsDao.insertGoods(goods) != TRUE) {
             responseUtil = new ResponseUtil(500, "error");
             return responseUtil;
         }
+        // 保存图片
         List<String> imageList = saveImage(goods.getId(), request);
         if (imageList == null) {
             responseUtil = new ResponseUtil(400, "error");
@@ -156,6 +160,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResponseUtil deleteGoods(int goodsId) {
         if (goodsId == FALSE) {
             responseUtil = new ResponseUtil(400, "info error");

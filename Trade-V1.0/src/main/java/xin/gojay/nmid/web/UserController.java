@@ -10,6 +10,10 @@ import xin.gojay.nmid.entity.User;
 import xin.gojay.nmid.service.UserService;
 import xin.gojay.nmid.util.ResponseUtil;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
  * @author Gojay
  * @date 2017/11/6.
@@ -64,8 +68,15 @@ public class UserController {
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ResponseBody
     public ResponseUtil checkUser(@Param("username") String username,
-                                  @Param("password") String password) {
-        return userService.checkUserLogin(username, password);
+                                  @Param("password") String password,
+                                  HttpServletRequest request) {
+        ResponseUtil responseUtil = userService.checkUserLogin(username, password);
+        if (responseUtil.getBody() != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", responseUtil.getBody());
+            session.setMaxInactiveInterval(6000);
+        }
+        return responseUtil;
     }
 
     /**

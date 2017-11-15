@@ -10,7 +10,7 @@
     <hr/>
     <h3>用户测试</h3>
     <a href="register.jsp">用户注册</a><br/>
-    <a href="localLogin.jsp">用户登录</a><br/>
+    <a href="login.jsp">用户登录</a><br/>
     <a href="update.jsp">修改资料</a><br/>
     <hr/>
     <h3>商品测试</h3>

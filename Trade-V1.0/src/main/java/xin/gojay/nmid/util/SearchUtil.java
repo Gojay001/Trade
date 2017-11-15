@@ -16,6 +16,6 @@ public class SearchUtil {
 
     /// 测试代码
     /*public static void main(String[] args) {
-        System.out.println(changeString("一二三"));
+        System.out.println(changeString(""));一二三
     }*/
 }

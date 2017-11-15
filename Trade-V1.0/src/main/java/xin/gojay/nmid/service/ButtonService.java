@@ -40,7 +40,6 @@ public interface ButtonService {
     /**
      * 确认完成交易
      * @param goodsId 商品id
-     * @param userId 用户id
      * @return 响应状态
      */
     ResponseUtil finishTrade(int goodsId);

@@ -81,7 +81,6 @@ public class ButtonController {
 
     /**
      * 确认交易
-     * @param userId 用户id
      * @param goodsId 商品id
      * @return 响应
      */
