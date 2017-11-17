@@ -20,47 +20,35 @@ public interface GoodsDao {
 
     /**
      * 查询求购商品列表
-     * @param start 初始id
-     * @param limit 每页商品数量
      * @return 求购商品列表
      */
-    List<Goods> listAskGoods(@Param("start") int start, @Param("limit") int limit);
+    List<Goods> listAskGoods();
 
     /**
      * 查询闲置商品列表（按时间）
-     * @param start 初始id
-     * @param limit 每页商品数量
      * @return 闲置商品列表
      */
-    List<Goods> listPublishGoodsByTime(@Param("start") int start, @Param("limit") int limit);
+    List<Goods> listPublishGoodsByTime();
 
     /**
      * 查询闲置商品列表（按热度）
-     * @param start 初始id
-     * @param limit 每页商品数量
      * @return 闲置商品列表
      */
-    List<Goods> listPublishGoodsByView(@Param("start") int start, @Param("limit") int limit);
+    List<Goods> listPublishGoodsByView();
 
     /**
      * 根据类别查询发布中商品列表
      * @param catagory 商品类别
-     * @param start 初始id
-     * @param limit 每页商品数量
      * @return 查询类别的发布中商品列表
      */
-    List<Goods> listPublishGoodsByCatagory(@Param("catagory") String catagory,
-                                           @Param("start")int start, @Param("limit")int limit);
+    List<Goods> listPublishGoodsByCatagory(@Param("catagory") String catagory);
 
     /**
      * 根据商品名称模糊查询发布中商品列表
      * @param name 商品名称
-     * @param start 初始id
-     * @param limit 每页商品数量
      * @return 商品信息列表
      */
-    List<Goods> listPublishGoodsByName(@Param("name") String name,
-                                       @Param("start")int start, @Param("limit")int limit);
+    List<Goods> listPublishGoodsByName(@Param("name") String name);
 
     /**
      * 从goods表中删除商品信息

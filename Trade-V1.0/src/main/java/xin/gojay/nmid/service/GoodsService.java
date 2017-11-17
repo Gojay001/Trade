@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import xin.gojay.nmid.entity.Goods;
 import xin.gojay.nmid.util.ResponseUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -81,9 +82,10 @@ public interface GoodsService {
     /**
      * 下架商品
      * @param goodsId 商品id
+     * @param request 当前请求
      * @return 响应状态
      */
-    ResponseUtil deleteGoods(int goodsId);
+    ResponseUtil deleteGoods(int goodsId, HttpServletRequest request);
 
     /**
      * 查询商品
@@ -92,5 +94,11 @@ public interface GoodsService {
      */
     ResponseUtil getGoods(int goodsId);
 
-    ResponseUtil handleList(List<Goods> goodsList);
+    /**
+     * 处理返回列表
+     * @param goodsList 待处理列表
+     * @param nowPage 当前页
+     * @return 响应状态
+     */
+    ResponseUtil handleList(List<Goods> goodsList, int nowPage);
 }

@@ -32,11 +32,11 @@
     <a href="<%=basePath%>/api/button/finishTrade/13">确认完成交易</a><br/>
     <hr>
     <h3>个人中心</h3>
-    <a href="<%=basePath%>/api/personal/showStar/3">我的收藏</a><br>
-    <a href="<%=basePath%>/api/personal/showOrder/5">我的预约</a><br>
-    <a href="<%=basePath%>/api/personal/showFinish/3">我已完成</a><br>
-    <a href="<%=basePath%>/api/personal/showPublish/1">我的发布</a><br>
-    <a href="<%=basePath%>/api/personal/showAsk/5">我的求购</a><br>
-    <a href="<%=basePath%>/api/personal/showMessage/3">我的消息</a><br>
+    <a href="<%=basePath%>/api/personal/showStar/3/1">我的收藏</a><br>
+    <a href="<%=basePath%>/api/personal/showOrder/5/1">我的预约</a><br>
+    <a href="<%=basePath%>/api/personal/showFinish/3/1">我已完成</a><br>
+    <a href="<%=basePath%>/api/personal/showPublish/1/1">我的发布</a><br>
+    <a href="<%=basePath%>/api/personal/showAsk/5/1">我的求购</a><br>
+    <a href="<%=basePath%>/api/personal/showMessage/3/1">我的消息</a><br>
 </body>
 </html>

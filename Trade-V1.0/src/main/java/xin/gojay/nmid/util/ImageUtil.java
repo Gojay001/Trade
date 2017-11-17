@@ -21,9 +21,11 @@ public class ImageUtil {
         }
         String path = request.getSession().getServletContext().getRealPath("upload/images");
         if (!new File(path).exists() || !new File(path).isDirectory()) {
-            new File(path).mkdirs();
+            if (!new File(path).mkdirs()) {
+                return null;
+            }
         }
-        // 上传文件的文件名
+        // 获取上传文件的文件名
         String name = file.getOriginalFilename();
         String type = name.substring(name.lastIndexOf("."), name.length());
         if (!(GIF.equals(type.toUpperCase()) || PNG.equals(type.toUpperCase()) || JPG.equals(type.toUpperCase()))) {
@@ -39,5 +41,20 @@ public class ImageUtil {
             return null;
         }
         return name;
+    }
+
+    public static int deleteImage(String name, HttpServletRequest request) {
+        if (name == null || "".equals(name)) {
+            return 0;
+        }
+        String path = request.getSession().getServletContext().getRealPath("upload/images");
+        File image = new File(path, name);
+        if (!image.isFile() || !image.exists()) {
+            return 0;
+        }
+        if (!image.delete()){
+            return 0;
+        }
+        return 1;
     }
 }

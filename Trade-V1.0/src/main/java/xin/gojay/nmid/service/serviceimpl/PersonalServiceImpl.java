@@ -7,6 +7,7 @@ import xin.gojay.nmid.dao.ImageDao;
 import xin.gojay.nmid.dao.StarDao;
 import xin.gojay.nmid.entity.Goods;
 import xin.gojay.nmid.service.PersonalService;
+import xin.gojay.nmid.util.PageUtil;
 import xin.gojay.nmid.util.ResponseUtil;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Service
 public class PersonalServiceImpl implements PersonalService {
+    private static final int PAGE_SIZE = 10;
     private ResponseUtil responseUtil = null;
 
     private final StarDao starDao;
@@ -32,7 +34,7 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public ResponseUtil showStar(Integer userId) {
+    public ResponseUtil showStar(Integer userId, int nowPage) {
         // 根据userId获取收藏goodsId列表
         List<Integer> goodsIdList = starDao.getGoodsId(userId);
         if (goodsIdList == null) {
@@ -45,41 +47,35 @@ public class PersonalServiceImpl implements PersonalService {
             Goods goods = goodsDao.getGoodsById(goodsId);
             goodsList.add(goods);
         }
-        // 根据goodsId获取商品图片列表
-        for (Goods goods : goodsList) {
-            goods.setImage(imageDao.getImage(goods.getId()));
-        }
-        responseUtil = new ResponseUtil(200, "success");
-        responseUtil.setBody(goodsList);
-        return responseUtil;
+        return handleList(goodsList, nowPage);
     }
 
     @Override
-    public ResponseUtil showOrder(Integer userId) {
+    public ResponseUtil showOrder(Integer userId, int nowPage) {
         List<Goods> goodsList = goodsDao.listOrderGoods(userId);
-        return handleList(goodsList);
+        return handleList(goodsList, nowPage);
     }
 
     @Override
-    public ResponseUtil showFinish(Integer userId) {
+    public ResponseUtil showFinish(Integer userId, int nowPage) {
         List<Goods> goodsList = goodsDao.listFinishGoods(userId);
-        return handleList(goodsList);
+        return handleList(goodsList, nowPage);
     }
 
     @Override
-    public ResponseUtil showPublish(Integer userId) {
+    public ResponseUtil showPublish(Integer userId, int nowPage) {
         List<Goods> goodsList = goodsDao.listUserPublishGoods(userId);
-        return handleList(goodsList);
+        return handleList(goodsList, nowPage);
     }
 
     @Override
-    public ResponseUtil showAsk(Integer userId) {
+    public ResponseUtil showAsk(Integer userId, int nowPage) {
         List<Goods> goodsList = goodsDao.listUserAskGoods(userId);
-        return handleList(goodsList);
+        return handleList(goodsList, nowPage);
     }
 
     @Override
-    public ResponseUtil showMessage(Integer userId) {
+    public ResponseUtil showMessage(Integer userId, int nowPage) {
         List<Goods> responseList = new ArrayList<>();
         // 根据userId获取用户求购商品列表
         List<Goods> goodsList = goodsDao.listUserAskGoods(userId);
@@ -97,24 +93,23 @@ public class PersonalServiceImpl implements PersonalService {
             responseUtil = new ResponseUtil(200, "null");
             return responseUtil;
         }
-        responseUtil = new ResponseUtil(200, "success");
-        responseUtil.setBody(responseList);
-        return responseUtil;
+        return handleList(responseList, nowPage);
     }
 
     @Override
-    public ResponseUtil handleList(List<Goods> goodsList) {
-        // 商品列表为空返回
-        if (goodsList == null) {
+    public ResponseUtil handleList(List<Goods> goodsList, int nowPage) {
+        // 分页处理
+        PageUtil<Goods> goodsPageUtil = new PageUtil<>(nowPage, PAGE_SIZE, goodsList).paging();
+        if (goodsPageUtil == null || goodsPageUtil.getList() == null || goodsPageUtil.getList().size() == 0) {
             responseUtil = new ResponseUtil(200, "null");
             return responseUtil;
         }
-        // 获取商品图片
+        // 根据goodsId获取商品图片列表
         for (Goods goods : goodsList) {
             goods.setImage(imageDao.getImage(goods.getId()));
         }
         responseUtil = new ResponseUtil(200, "success");
-        responseUtil.setBody(goodsList);
+        responseUtil.setBody(goodsPageUtil);
         return responseUtil;
     }
 }

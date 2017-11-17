@@ -10,7 +10,6 @@ import xin.gojay.nmid.entity.User;
 import xin.gojay.nmid.service.UserService;
 import xin.gojay.nmid.util.ResponseUtil;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -107,6 +106,16 @@ public class UserController {
         user.setEmail(email);
         user.setAddress(address);
         return userService.updateUser(user);
+    }
+
+    /**
+     * 退出登录
+     * @param request 请求
+     */
+    @RequestMapping(value = "/signOut")
+    @ResponseBody
+    public void signOut(HttpServletRequest request) {
+        request.getSession().removeAttribute("user");
     }
 
     @RequestMapping(value = "/signUp1", method = RequestMethod.POST)

@@ -16,7 +16,8 @@
     <title>用户注册</title>
 </head>
 <body>
-<form name="updateUser" method="post" action="<%=basePath%>/api/user/updateUser/3">
+<form name="updateUser" method="post" action="<%=basePath%>/api/user/updateUser">
+    <input name="id" type="hidden" value="3" />
     用户名：<strong>test</strong><br/>
     用户昵称：<input name="nickname" type="text" placeholder="不超过22个字符" /><br/>
     密码：<input name="password" type="password" placeholder="不超过22个字符" /><br/>

@@ -14,7 +14,6 @@
         SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
         FROM goods WHERE buy_id IS NOT NULL AND sell_id IS NULL AND status = 1
         ORDER BY create_time DESC
-        LIMIT #{start}, #{limit}
     </select>
 
     <!--按照create_time列出闲置商品列表-->
@@ -22,7 +21,6 @@
         SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
         FROM goods WHERE sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
         ORDER BY create_time DESC
-        LIMIT #{start}, #{limit}
     </select>
 
     <!--按照view列出闲置商品列表-->
@@ -30,7 +28,6 @@
         SELECT id, name, price, catagory, detail, create_time, sell_id, buy_id, status, view
         FROM goods WHERE sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
         ORDER BY view DESC
-        LIMIT #{start}, #{limit}
     </select>
 
     <!--根据类别列出发布中列表-->
@@ -39,7 +36,6 @@
         FROM goods
         WHERE catagory = #{catagory} AND sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
         ORDER BY id DESC
-        LIMIT #{start}, #{limit}
     </select>
 
     <!--根据名称模糊搜索发布中商品列表-->
@@ -48,7 +44,6 @@
         FROM goods
         WHERE name LIKE CONCAT('%',#{name},'%') AND sell_id IS NOT NULL AND buy_id IS NULL AND status = 1
         ORDER BY id DESC
-        LIMIT #{start}, #{limit}
     </select>
 
     <!--根据商品id删除image、collection、goods表中记录-->

@@ -28,10 +28,11 @@ public class PersonalController {
      * @param userId 用户id
      * @return 响应
      */
-    @RequestMapping(value = "/showStar/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/showStar/{userId}/{nowPage}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseUtil showStar(@PathVariable Integer userId) {
-        return personalService.showStar(userId);
+    public ResponseUtil showStar(@PathVariable Integer userId,
+                                 @PathVariable int nowPage) {
+        return personalService.showStar(userId, nowPage);
     }
 
     /**
@@ -39,10 +40,11 @@ public class PersonalController {
      * @param userId 用户id
      * @return 响应
      */
-    @RequestMapping(value = "/showOrder/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/showOrder/{userId}/{nowPage}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseUtil showOrder(@PathVariable Integer userId) {
-        return personalService.showOrder(userId);
+    public ResponseUtil showOrder(@PathVariable Integer userId,
+                                  @PathVariable int nowPage) {
+        return personalService.showOrder(userId, nowPage);
     }
 
     /**
@@ -50,10 +52,11 @@ public class PersonalController {
      * @param userId 用户id
      * @return 响应
      */
-    @RequestMapping(value = "/showFinish/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/showFinish/{userId}/{nowPage}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseUtil showFinish(@PathVariable Integer userId) {
-        return personalService.showFinish(userId);
+    public ResponseUtil showFinish(@PathVariable Integer userId,
+                                   @PathVariable int nowPage) {
+        return personalService.showFinish(userId, nowPage);
     }
 
     /**
@@ -61,10 +64,11 @@ public class PersonalController {
      * @param userId 用户id
      * @return 响应
      */
-    @RequestMapping(value = "/showPublish/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/showPublish/{userId}/{nowPage}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseUtil showPublish(@PathVariable Integer userId) {
-        return personalService.showPublish(userId);
+    public ResponseUtil showPublish(@PathVariable Integer userId,
+                                    @PathVariable int nowPage) {
+        return personalService.showPublish(userId, nowPage);
     }
 
     /**
@@ -72,10 +76,11 @@ public class PersonalController {
      * @param userId 用户id
      * @return 响应
      */
-    @RequestMapping(value = "/showAsk/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/showAsk/{userId}/{nowPage}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseUtil showAsk(@PathVariable Integer userId) {
-        return personalService.showAsk(userId);
+    public ResponseUtil showAsk(@PathVariable Integer userId,
+                                @PathVariable int nowPage) {
+        return personalService.showAsk(userId, nowPage);
     }
 
     /**
@@ -83,9 +88,10 @@ public class PersonalController {
      * @param userId 用户id
      * @return 响应
      */
-    @RequestMapping(value = "/showMessage/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/showMessage/{userId}/{nowPage}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseUtil showMessage(@PathVariable Integer userId) {
-        return personalService.showMessage(userId);
+    public ResponseUtil showMessage(@PathVariable Integer userId,
+                                    @PathVariable int nowPage) {
+        return personalService.showMessage(userId, nowPage);
     }
 }

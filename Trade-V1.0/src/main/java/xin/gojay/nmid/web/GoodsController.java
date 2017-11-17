@@ -9,6 +9,7 @@ import xin.gojay.nmid.entity.Goods;
 import xin.gojay.nmid.service.GoodsService;
 import xin.gojay.nmid.util.ResponseUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 
 /**
@@ -149,8 +150,9 @@ public class GoodsController {
      */
     @RequestMapping(value = "/deleteGoods/{goodsId}")
     @ResponseBody
-    public ResponseUtil deleteGoods(@PathVariable int goodsId) {
-        return goodsService.deleteGoods(goodsId);
+    public ResponseUtil deleteGoods(@PathVariable int goodsId,
+                                    HttpServletRequest request) {
+        return goodsService.deleteGoods(goodsId, request);
     }
 
     /**

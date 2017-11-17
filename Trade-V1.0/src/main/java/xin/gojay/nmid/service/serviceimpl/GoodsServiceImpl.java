@@ -12,9 +12,11 @@ import xin.gojay.nmid.entity.Goods;
 import xin.gojay.nmid.entity.Image;
 import xin.gojay.nmid.service.GoodsService;
 import xin.gojay.nmid.util.ImageUtil;
+import xin.gojay.nmid.util.PageUtil;
 import xin.gojay.nmid.util.ResponseUtil;
 import xin.gojay.nmid.util.SearchUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import java.util.List;
  */
 @Service
 public class GoodsServiceImpl implements GoodsService {
-    private static final int PAGE_LIMIT_NUMBER = 10;
+    private static final int PAGE_SIZE = 10;
     private static final int NAME_LENGTH = 22;
     private static final int FALSE = 0;
     private static final int TRUE = 1;
@@ -126,26 +128,26 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public ResponseUtil listAskGoods(int nowPage) {
-        List<Goods> goodsList = goodsDao.listAskGoods((nowPage-1)*PAGE_LIMIT_NUMBER, PAGE_LIMIT_NUMBER);
-        return handleList(goodsList);
+        List<Goods> goodsList = goodsDao.listAskGoods();
+        return handleList(goodsList, nowPage);
     }
 
     @Override
     public ResponseUtil listPublishGoodsByTime(int nowPage) {
-        List<Goods> goodsList = goodsDao.listPublishGoodsByTime((nowPage-1)*PAGE_LIMIT_NUMBER, PAGE_LIMIT_NUMBER);
-        return handleList(goodsList);
+        List<Goods> goodsList = goodsDao.listPublishGoodsByTime();
+        return handleList(goodsList, nowPage);
     }
 
     @Override
     public ResponseUtil listPublishGoodsByView(int nowPage) {
-        List<Goods> goodsList = goodsDao.listPublishGoodsByView((nowPage-1)*PAGE_LIMIT_NUMBER, PAGE_LIMIT_NUMBER);
-        return handleList(goodsList);
+        List<Goods> goodsList = goodsDao.listPublishGoodsByView();
+        return handleList(goodsList, nowPage);
     }
 
     @Override
     public ResponseUtil listPublishGoodsByCatagory(String catagory, int nowPage) {
-        List<Goods> goodsList = goodsDao.listPublishGoodsByCatagory(catagory, (nowPage-1)*PAGE_LIMIT_NUMBER, PAGE_LIMIT_NUMBER);
-        return handleList(goodsList);
+        List<Goods> goodsList = goodsDao.listPublishGoodsByCatagory(catagory);
+        return handleList(goodsList, nowPage);
     }
 
     @Override
@@ -155,13 +157,13 @@ public class GoodsServiceImpl implements GoodsService {
             return responseUtil;
         }
         name = SearchUtil.changeString(name);
-        List<Goods> goodsList = goodsDao.listPublishGoodsByName(name, (nowPage-1)*PAGE_LIMIT_NUMBER, PAGE_LIMIT_NUMBER);
-        return handleList(goodsList);
+        List<Goods> goodsList = goodsDao.listPublishGoodsByName(name);
+        return handleList(goodsList, nowPage);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResponseUtil deleteGoods(int goodsId) {
+    public ResponseUtil deleteGoods(int goodsId, HttpServletRequest request) {
         if (goodsId == FALSE) {
             responseUtil = new ResponseUtil(400, "info error");
             return responseUtil;
@@ -171,6 +173,7 @@ public class GoodsServiceImpl implements GoodsService {
             return responseUtil;
         }
         // 删除商品图片、收藏信息
+        ImageUtil.deleteImage(goodsDao.getGoodsById(goodsId).getName(), request);
         imageDao.deleteImage(goodsId);
         starDao.deleteStar(goodsId);
         if (goodsDao.deleteGoods(goodsId) != TRUE) {
@@ -200,16 +203,19 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public ResponseUtil handleList(List<Goods> goodsList) {
-        if (goodsList == null) {
+    public ResponseUtil handleList(List<Goods> goodsList, int nowPage) {
+        // 分页处理
+        PageUtil<Goods> goodsPageUtil = new PageUtil<>(nowPage, PAGE_SIZE, goodsList).paging();
+        if (goodsPageUtil == null || goodsPageUtil.getList() == null || goodsPageUtil.getList().size() == FALSE) {
             responseUtil = new ResponseUtil(200, "null");
             return responseUtil;
         }
-        for (Goods goods : goodsList) {
+        // 获取商品图片
+        for (Goods goods : goodsPageUtil.getList()) {
             goods.setImage(imageDao.getImage(goods.getId()));
         }
         responseUtil = new ResponseUtil(200, "success");
-        responseUtil.setBody(goodsList);
+        responseUtil.setBody(goodsPageUtil);
         return responseUtil;
     }
 }
