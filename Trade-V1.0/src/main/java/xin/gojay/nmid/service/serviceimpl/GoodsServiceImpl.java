@@ -195,6 +195,8 @@ public class GoodsServiceImpl implements GoodsService {
             responseUtil = new ResponseUtil(400, "info error");
             return responseUtil;
         }
+        // 获取商品图片
+        goods.setImage(imageDao.getImage(goods.getId()));
         // 增加商品浏览量
         goodsDao.addGoodsView(goodsId);
         responseUtil = new ResponseUtil(200, "success");

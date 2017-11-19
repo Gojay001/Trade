@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public ResponseUtil insertUser(User user) {
         // 用户名是否存在
         if (usernameIsExist(user.getUsername()) != FALSE) {
-            responseUtil = new ResponseUtil(400, "info error");
+            responseUtil = new ResponseUtil(400, "user existed");
             return responseUtil;
         }
         // 验证输入信息
@@ -45,32 +45,32 @@ public class UserServiceImpl implements UserService {
             responseUtil = new ResponseUtil(500, "error");
             return responseUtil;
         }
-        responseUtil = new ResponseUtil(201, "success！");
+        responseUtil = new ResponseUtil(201, "success");
         responseUtil.setBody(user);
         return responseUtil;
     }
 
     @Override
     public int checkUserInfo(User user) {
-        if (user.getUsername() == null || user.getUsername().length() > USERNAME_LENGTH) {
+        if (user.getUsername() == null || "".equals(user.getUsername()) || user.getUsername().length() > USERNAME_LENGTH) {
             return FALSE;
         }
-        if (user.getNickname() == null || user.getNickname().length() > NICKNAME_LENGTH) {
+        if (user.getNickname() == null || "".equals(user.getNickname()) || user.getNickname().length() > NICKNAME_LENGTH) {
             return FALSE;
         }
-        if (user.getPassword() == null || user.getPassword().length() > PASSWORD_LENGTH) {
+        if (user.getPassword() == null || "".equals(user.getPassword()) || user.getPassword().length() > PASSWORD_LENGTH) {
             return FALSE;
         }
         if (!RegexUtil.isMobile(user.getTel())) {
             return FALSE;
         }
-        if (user.getQq().length() > QQ_LENGTH) {
+        if (user.getQq() == null || "".equals(user.getQq()) || user.getQq().length() > QQ_LENGTH) {
             return FALSE;
         }
         if (!RegexUtil.isEmail(user.getEmail())) {
             return FALSE;
         }
-        if (user.getAddress() == null) {
+        if (user.getAddress() == null || "".equals(user.getAddress())) {
             return FALSE;
         }
         return TRUE;
